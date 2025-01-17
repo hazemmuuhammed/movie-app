@@ -77,11 +77,7 @@ export default function MovieDetails({
   }, [showNotification]);
 
   if (loading) {
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -118,7 +114,7 @@ export default function MovieDetails({
         <div className={styles.detailsContainer}>
           <h1 className={styles.title}>{movie.Title}</h1>
           <p className={styles.tagline}>{movie.Genre}</p>
-          <MovieRatings ratings={movie.Ratings} />
+          <MovieRatings ratings={movie?.Ratings} />
           <MovieMetadata movie={movie} />
           <MoviePlot plot={movie.Plot} />
         </div>

@@ -14,7 +14,7 @@ export default function MoviePoster({
   return (
     <div className={styles.posterContainer}>
       <Image
-        src={movie.Poster}
+        src={movie.Poster === "N/A" ? "/movies/placeholder.jpg" : movie.Poster}
         alt={movie.Title}
         width={300}
         height={450}

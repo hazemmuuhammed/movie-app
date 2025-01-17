@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import styles from "@/styles/MovieCard.module.css";
-import { useFavoritesStore } from "../store/useStore";
+import styles from "@/components/movieCard/MovieCard.module.css";
+import { useFavoritesStore } from "../../store/useStore";
 
 interface MovieCardProps {
   movie: {
@@ -12,7 +12,8 @@ interface MovieCardProps {
     imdbID: string;
   };
   onToggleFavorite: (imdbID: string) => void;
-  isFavorite: boolean;
+  isFavorite?: boolean;
+  showRemoveButton?: boolean;
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
@@ -48,7 +49,9 @@ export default function MovieCard({ movie }: MovieCardProps) {
     >
       <div className={styles.posterContainer}>
         <Image
-          src={movie.Poster === "N/A" ? "/no-poster.jpg" : movie.Poster}
+          src={
+            movie.Poster === "N/A" ? "/movies/placeholder.jpg" : movie.Poster
+          }
           alt={movie.Title}
           priority
           width={200}

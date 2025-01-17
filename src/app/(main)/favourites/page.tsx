@@ -1,8 +1,11 @@
-"use client"; // Add this directive at the top
+"use client"; // Ensure this directive is at the top
 
 import { useFavoritesStore } from "@/store/useStore";
 import { useEffect, useState } from "react";
-import styles from "@/styles/favourite.module.css";
+import styles from "@/components/favorites/favourite.module.css";
+import FavoritesList from "@/components/favorites/FavoritesList";
+import ClearFavoritesButton from "@/components/favorites/ClearFavoriteButton";
+import Link from "next/link";
 
 export default function FavoritesPage() {
   const { favorites, removeFavorite, clearFavorites } = useFavoritesStore();
@@ -19,35 +22,24 @@ export default function FavoritesPage() {
 
   return (
     <div className={styles.favoritesPage}>
+      {/* Navigation Bar */}
+      <nav className={styles.navBar}>
+        <Link href="/" className={styles.navLink}>
+          Home
+        </Link>
+        <Link href="/favourites" className={styles.navLink}>
+          Favorites
+        </Link>
+      </nav>
+
       <h1 className={styles.pageTitle}>Favourite Movies</h1>
       {favorites.length > 0 ? (
         <>
-          <button
-            onClick={clearFavorites}
-            className={styles.clearAllButton}
-            aria-label="Clear all favorites"
-          >
-            Clear All Favorites
-          </button>
-          <ul className={styles.favoritesList}>
-            {favorites.map((movie) => (
-              <li key={movie.imdbID} className={styles.favoriteItem}>
-                <img
-                  src={movie.Poster}
-                  alt={movie.Title}
-                  className={styles.moviePoster}
-                />
-                <h2 className={styles.movieTitle}>{movie.Title}</h2>
-                <button
-                  onClick={() => removeFavorite(movie.imdbID)}
-                  className={styles.removeButton}
-                  aria-label={`Remove ${movie.Title} from favorites`}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
+          <ClearFavoritesButton clearFavorites={clearFavorites} />
+          <FavoritesList
+            favorites={favorites}
+            removeFavorite={removeFavorite}
+          />
         </>
       ) : (
         <p className={styles.noFavoritesMessage}>

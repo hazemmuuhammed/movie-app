@@ -7,6 +7,12 @@
   animation: spin 1s linear infinite;
   margin: 20px auto;
 }
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
 
 @keyframes spin {
   0% {

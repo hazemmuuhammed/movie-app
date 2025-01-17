@@ -1,7 +1,7 @@
 "use client"; // Mark this as a Client Component
 import { useState, useEffect } from "react";
 import Link from "next/link"; // Import Link from next/link
-import styles from "@/styles/Search.module.css";
+import styles from "@/components/search/Search.module.css";
 
 interface Movie {
   Title: string;

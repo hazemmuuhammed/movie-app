@@ -1,11 +1,12 @@
 "use client"; // Mark this as a Client Component
 import { useEffect, useState } from "react";
-import MovieCard from "@/components/MovieCard";
+import MovieCard from "@/components/movieCard/MovieCard";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
-import Search from "@/components/search"; // Update the import path
+import Search from "@/components/search/Search"; // Update the import path
 import styles from "@/components/landing/page.module.css"; // Update the import path
 import { Notification } from "@/components/movieDetails/Notifications"; // Update the import path
+import Link from "next/link"; // Import Link for navigation
 
 interface Movie {
   Title: string;
@@ -89,11 +90,19 @@ export default function Home() {
   };
 
   const toggleFavorite = (imdbID: string) => {
-    if (favorites.includes(imdbID)) {
-      setFavorites(favorites.filter((id) => id !== imdbID));
-    } else {
-      setFavorites([...favorites, imdbID]);
-      setShowNotification(true); // Show notification when a movie is added to favorites
+    setFavorites((prevFavorites) => {
+      if (prevFavorites.includes(imdbID)) {
+        // If the movie is already in favorites, remove it
+        return prevFavorites.filter((id) => id !== imdbID);
+      } else {
+        // If the movie is not in favorites, add it
+        return [...prevFavorites, imdbID];
+      }
+    });
+
+    // Show notification only when adding to favorites
+    if (!favorites.includes(imdbID)) {
+      setShowNotification(true);
     }
   };
 
@@ -105,6 +114,16 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      {/* Navigation Bar */}
+      <nav className={styles.navBar}>
+        <Link href="/" className={styles.navLink}>
+          Home
+        </Link>
+        <Link href="/favourites" className={styles.navLink}>
+          Favorites
+        </Link>
+      </nav>
+
       <h1>Movie Library</h1>
 
       <Notification />
@@ -136,7 +155,7 @@ export default function Home() {
                 key={movie.imdbID}
                 movie={movie}
                 onToggleFavorite={toggleFavorite}
-                isFavorite={favorites.includes(movie.imdbID)}
+                isFavorite={favorites.includes(movie.imdbID)} // Pass a function that returns the current state
               />
             ))
           ) : (
