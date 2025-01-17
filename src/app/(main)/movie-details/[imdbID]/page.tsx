@@ -9,7 +9,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 export default function MovieDetails({
   params,
 }: {
-  params: { imdbID: string };
+  params: Promise<{ imdbID: string }>;
 }) {
   const [movie, setMovie] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ export default function MovieDetails({
     const fetchMovieDetails = async () => {
       try {
         const response = await fetch(
-          `http://www.omdbapi.com/?i=${params.imdbID}&apikey=a406e1c`
+          `http://www.omdbapi.com/?i=${(await params).imdbID}&apikey=a406e1c`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch movie details");
@@ -37,7 +37,7 @@ export default function MovieDetails({
     };
 
     fetchMovieDetails();
-  }, [params?.imdbID]);
+  }, [params]);
 
   if (loading) {
     return (

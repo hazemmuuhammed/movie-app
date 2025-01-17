@@ -51,6 +51,7 @@ export default function MovieCard({
           {isFavorite ? "❤️" : "🤍"}
         </button>
       </div>
+
       <h3 className={styles.title}>{movie.Title}</h3>
     </div>
   );
