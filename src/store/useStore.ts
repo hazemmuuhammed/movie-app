@@ -10,7 +10,10 @@ interface FavoritesStore {
   favorites: Movie[];
   addFavorite: (movie: Movie) => void;
   removeFavorite: (imdbID: string) => void;
+  clearFavorites: () => void; // New function to clear all favorites
   isFavorite: (imdbID: string) => boolean;
+  notification: string | null;
+  setNotification: (message: string | null) => void;
 }
 
 // Helper function to check if localStorage is available
@@ -56,6 +59,16 @@ export const useFavoritesStore = create<FavoritesStore>((set, get) => ({
       return { favorites: newFavorites };
     });
   },
+  clearFavorites: () => {
+    set(() => {
+      if (isLocalStorageAvailable()) {
+        localStorage.removeItem("favorites"); // Clear favorites from localStorage
+      }
+      return { favorites: [] }; // Reset favorites to an empty array
+    });
+  },
   isFavorite: (imdbID) =>
     get().favorites.some((movie) => movie.imdbID === imdbID),
+  notification: null,
+  setNotification: (message) => set({ notification: message }),
 }));

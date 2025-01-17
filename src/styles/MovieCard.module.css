@@ -44,3 +44,20 @@
   font-size: 1rem;
   color: "White";
 }
+
+/* MovieCard.module.css */
+
+/* Bouncy Animation */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.bounce {
+  animation: bounce 0.5s ease-in-out;
+}

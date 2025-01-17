@@ -17,6 +17,7 @@ interface MovieCardProps {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isBouncing, setIsBouncing] = useState(false); // State for bouncy animation
   const router = useRouter();
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore();
 
@@ -26,11 +27,16 @@ export default function MovieCard({ movie }: MovieCardProps) {
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setIsBouncing(true); // Trigger bouncy animation
+
     if (isFavorite(movie.imdbID)) {
       removeFavorite(movie.imdbID);
     } else {
       addFavorite(movie);
     }
+
+    // Reset animation after 500ms
+    setTimeout(() => setIsBouncing(false), 500);
   };
 
   return (
@@ -52,7 +58,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
         <button
           className={`${styles.heartIcon} ${
             isFavorite(movie.imdbID) ? styles.favorite : ""
-          }`}
+          } ${isBouncing ? styles.bounce : ""}`} // Add bounce class when isBouncing is true
           onClick={handleToggleFavorite}
         >
           {isFavorite(movie.imdbID) ? "❤️" : "🤍"}
