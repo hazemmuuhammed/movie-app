@@ -1,5 +1,6 @@
 "use client"; // Mark this as a Client Component
 import { useState, useEffect } from "react";
+import Link from "next/link"; // Import Link from next/link
 import styles from "./Search.module.css";
 
 interface Movie {
@@ -59,20 +60,26 @@ export default function Search({
               <p>{error}</p> // Show error message from the endpoint
             ) : movies.length > 0 ? (
               movies.map((movie) => (
-                <div key={movie.imdbID} className={styles.movieCard}>
-                  <img
-                    src={
-                      movie.Poster === "N/A" ? "/no-poster.jpg" : movie.Poster
-                    }
-                    alt={movie.Title}
-                    className={styles.poster}
-                  />
-                  <div className={styles.movieInfo}>
-                    <h3>{movie.Title}</h3>
-                    <p>Year: {movie.Year}</p>
-                    <p>Rating: {movie.imdbRating || "N/A"}</p>
+                <Link
+                  key={movie.imdbID}
+                  href={`/movie-details/${movie.imdbID}`} // Navigate to movie details page
+                  passHref
+                >
+                  <div className={styles.movieCard}>
+                    <img
+                      src={
+                        movie.Poster === "N/A" ? "/no-poster.jpg" : movie.Poster
+                      }
+                      alt={movie.Title}
+                      className={styles.poster}
+                    />
+                    <div className={styles.movieInfo}>
+                      <h3>{movie.Title}</h3>
+                      <p>Year: {movie.Year}</p>
+                      <p>Rating: {movie.imdbRating || "N/A"}</p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p>No movies found.</p> // Show "No movies found" only if there are no results

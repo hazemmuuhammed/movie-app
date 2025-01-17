@@ -4,7 +4,7 @@ import MovieCard from "../components/MovieCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import SkeletonLoader from "../components/SkeletonLoader";
 import Search from "@/components/search"; // Import the Search component
-import styles from "./page.module.css";
+import styles from "@/app/shared/page.module.css";
 
 interface Movie {
   Title: string;
