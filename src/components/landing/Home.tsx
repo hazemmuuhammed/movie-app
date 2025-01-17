@@ -1,8 +1,8 @@
 "use client"; // Mark this as a Client Component
 import { useEffect, useState } from "react";
 import MovieCard from "@/components/MovieCard";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import SkeletonLoader from "@/components/SkeletonLoader";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import SkeletonLoader from "@/components/common/SkeletonLoader";
 import Search from "@/components/search"; // Update the import path
 import styles from "@/components/landing/page.module.css"; // Update the import path
 import { Notification } from "@/components/movieDetails/Notifications"; // Update the import path

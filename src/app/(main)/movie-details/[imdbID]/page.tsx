@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import MovieDetails from "@/components/movieDetails/MovieDetails";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export default function Page({
   params,

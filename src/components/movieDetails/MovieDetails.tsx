@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { useFavoritesStore } from "@/store/useStore";
 import { Notification } from "@/components/movieDetails/Notifications";
 import MoviePoster from "@/components/movieDetails/MoviePoster";
