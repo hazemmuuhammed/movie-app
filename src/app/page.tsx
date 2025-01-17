@@ -102,7 +102,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <h1>Movie List</h1>
+      <h1>Movie Library</h1>
 
       {/* Search Input */}
       <Search
