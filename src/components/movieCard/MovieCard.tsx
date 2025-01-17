@@ -59,6 +59,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
           className={styles.poster}
         />
         <button
+          type="button"
           className={`${styles.heartIcon} ${
             isFavorite(movie.imdbID) ? styles.favorite : ""
           } ${isBouncing ? styles.bounce : ""}`} // Add bounce class when isBouncing is true

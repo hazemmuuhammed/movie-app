@@ -1,74 +1,100 @@
-"use client"; // Mark this as a Client Component
 import { useState, useEffect } from "react";
-import Link from "next/link"; // Import Link from next/link
+import Link from "next/link";
 import styles from "@/components/search/Search.module.css";
+import Image from "next/image";
+const Search = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  interface Movie {
+    imdbID: string;
+    Title: string;
+    Year: string;
+    Poster: string;
+    imdbRating?: string;
+  }
 
-interface Movie {
-  Title: string;
-  Poster: string;
-  Year: string;
-  imdbID: string;
-  imdbRating?: string; // Rating may not always be available
-}
-
-interface SearchProps {
-  onSearch: (query: string) => void;
-  movies: Movie[];
-  loading: boolean;
-  error?: string | null; // Add error prop
-}
-
-export default function Search({
-  onSearch,
-  movies,
-  loading,
-  error,
-}: SearchProps) {
-  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<Movie[]>([]);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [totalResults, setTotalResults] = useState(0);
+  const [showNotification, setShowNotification] = useState(false);
 
   // Debounce the search input
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
-      if (query.trim() !== "") {
-        onSearch(query); // Only call onSearch if query is not empty
+      if (searchQuery.trim() !== "") {
+        handleSearch(searchQuery); // Only call handleSearch if searchQuery is not empty
       } else {
-        onSearch(""); // Clear results if query is empty
+        setSearchResults([]); // Clear results if searchQuery is empty
+        setSearchError(null); // Clear error if searchQuery is empty
       }
     }, 300); // 300ms delay
 
     return () => clearTimeout(debounceTimer);
-  }, [query]); // Only re-run when query changes
+  }, [searchQuery]); // Only re-run when searchQuery changes
+
+  const handleSearch = async (query: string) => {
+    if (!query) {
+      setSearchResults([]); // Clear search results if query is empty
+      setSearchError(null); // Clear error if query is empty
+      return;
+    }
+
+    try {
+      setSearchLoading(true);
+      setSearchError(null); // Clear previous error
+      const apiKey = process.env.NEXT_PUBLIC_OMDB_API_KEY;
+      const response = await fetch(
+        `https://www.omdbapi.com/?s=${query}&apikey=${apiKey}`
+      );
+      const data = await response.json();
+      if (data.Search) {
+        setSearchResults(data.Search);
+        setTotalResults(data.totalResults);
+        setHasMore(data.Search.length > 0);
+      } else {
+        setSearchResults([]);
+        setSearchError(data.Error || "No results found");
+      }
+    } catch (error) {
+      setSearchError("An error occurred while searching");
+    } finally {
+      setSearchLoading(false);
+    }
+  };
 
   return (
-    <div className={styles.searchContainer}>
-      {/* Search Input */}
+    <div>
       <input
         type="text"
-        placeholder="Search for a movie..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        value={searchQuery}
         className={styles.searchInput}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search for movies..."
       />
-
-      {/* Search Results */}
-      {loading ? (
+      {searchLoading ? (
         <div className={styles.loading}>Loading...</div>
       ) : (
-        query.trim() !== "" && ( // Only show results or error if query is not empty
+        searchQuery.trim() !== "" && ( // Only show results or error if searchQuery is not empty
           <div className={styles.movieList}>
-            {error ? (
-              <p>{error}</p> // Show error message from the endpoint
-            ) : movies.length > 0 ? (
-              movies.map((movie) => (
+            {searchError ? (
+              <p>{searchError}</p> // Show error message from the endpoint
+            ) : searchResults.length > 0 ? (
+              searchResults.map((movie) => (
                 <Link
                   key={movie.imdbID}
                   href={`/movie-details/${movie.imdbID}`} // Navigate to movie details page
                   passHref
                 >
                   <div className={styles.movieCard}>
-                    <img
+                    <Image
+                      width={200}
+                      height={300}
                       src={
-                        movie.Poster === "N/A" ? "/no-poster.jpg" : movie.Poster
+                        movie.Poster === "N/A"
+                          ? "/movies/placeholder.jpg"
+                          : movie.Poster
                       }
                       alt={movie.Title}
                       className={styles.poster}
@@ -89,4 +115,6 @@ export default function Search({
       )}
     </div>
   );
-}
+};
+
+export default Search;
