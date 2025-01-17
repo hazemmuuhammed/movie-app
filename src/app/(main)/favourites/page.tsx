@@ -1,21 +1,25 @@
-import Link from "next/link";
-import styles from "@/app/shared/page.module.css";
+"use client"; // Add this directive at the top
 
-export default function Favorites() {
+import { useFavoritesStore } from "@/store/useStore";
+
+export default function FavoritesPage() {
+  const { favorites } = useFavoritesStore();
+
   return (
-    <div className={styles.container}>
-      <h1>Favorites Page</h1>
-      <p>This is the Favorites Page.</p>
-      <nav>
+    <div>
+      <h1>Favourite Movies</h1>
+      {favorites.length > 0 ? (
         <ul>
-          <li>
-            <Link href="/">Go back to Home</Link>
-          </li>
-          <li>
-            <Link href="/movie-details">Go to Movie Details</Link>
-          </li>
+          {favorites.map((movie) => (
+            <li key={movie.imdbID}>
+              <img src={movie.Poster} alt={movie.Title} />
+              <h2>{movie.Title}</h2>
+            </li>
+          ))}
         </ul>
-      </nav>
+      ) : (
+        <p>No favourite movies added yet.</p>
+      )}
     </div>
   );
 }

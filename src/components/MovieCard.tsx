@@ -1,7 +1,9 @@
+"use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./MovieCard.module.css";
+import { useFavoritesStore } from "../store/useStore";
 
 interface MovieCardProps {
   movie: {
@@ -13,16 +15,22 @@ interface MovieCardProps {
   isFavorite: boolean;
 }
 
-export default function MovieCard({
-  movie,
-  onToggleFavorite,
-  isFavorite,
-}: MovieCardProps) {
+export default function MovieCard({ movie }: MovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore();
 
   const handleCardClick = () => {
     router.push(`/movie-details/${movie.imdbID}`);
+  };
+
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isFavorite(movie.imdbID)) {
+      removeFavorite(movie.imdbID);
+    } else {
+      addFavorite(movie);
+    }
   };
 
   return (
@@ -42,13 +50,12 @@ export default function MovieCard({
           className={styles.poster}
         />
         <button
-          className={`${styles.heartIcon} ${isFavorite ? styles.favorite : ""}`}
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent the card click event
-            onToggleFavorite(movie.imdbID);
-          }}
+          className={`${styles.heartIcon} ${
+            isFavorite(movie.imdbID) ? styles.favorite : ""
+          }`}
+          onClick={handleToggleFavorite}
         >
-          {isFavorite ? "❤️" : "🤍"}
+          {isFavorite(movie.imdbID) ? "❤️" : "🤍"}
         </button>
       </div>
 
