@@ -1,0 +1,58 @@
+.searchContainer {
+  position: relative;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.movieList {
+  margin-top: 10px;
+}
+
+.movieCard {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.poster {
+  width: 100px;
+  height: auto;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.movieInfo {
+  flex: 1;
+}
+
+.movieInfo h3 {
+  margin: 0;
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: #333;
+}
+
+.movieInfo p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #555;
+}
