@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "@/components/search/Search.module.css";
 import Image from "next/image";
+
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   interface Movie {
@@ -15,10 +16,8 @@ const Search = () => {
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [totalResults, setTotalResults] = useState(0);
-  const [showNotification, setShowNotification] = useState(false);
 
   // Debounce the search input
   useEffect(() => {
