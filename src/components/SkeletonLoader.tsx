@@ -1,4 +1,4 @@
-import styles from "./SkeletonLoader.module.css";
+import styles from "@/styles/SkeletonLoader.module.css";
 
 export default function SkeletonLoader() {
   return (
