@@ -2,18 +2,17 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "@/components/search/Search.module.css";
 import Image from "next/image";
+import { Movie } from "@/types/movie";
 
-const Search = () => {
+interface search {
+  searchResults: Movie[];
+  updateChangeResults: (movies: Movie[]) => void;
+}
+
+const Search = ({ searchResults, updateChangeResults }: search) => {
   const [searchQuery, setSearchQuery] = useState("");
-  interface Movie {
-    imdbID: string;
-    Title: string;
-    Year: string;
-    Poster: string;
-    imdbRating?: string;
-  }
+  // Removed local Movie interface as it is already imported
 
-  const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
 
@@ -23,7 +22,7 @@ const Search = () => {
       if (searchQuery.trim() !== "") {
         handleSearch(searchQuery); // Only call handleSearch if searchQuery is not empty
       } else {
-        setSearchResults([]); // Clear results if searchQuery is empty
+        updateChangeResults([]); // Clear results if searchQuery is empty
         setSearchError(null); // Clear error if searchQuery is empty
       }
     }, 300); // 300ms delay
@@ -33,7 +32,7 @@ const Search = () => {
 
   const handleSearch = async (query: string) => {
     if (!query) {
-      setSearchResults([]); // Clear search results if query is empty
+      updateChangeResults([]); // Clear search results if query is empty
       setSearchError(null); // Clear error if query is empty
       return;
     }
@@ -47,9 +46,9 @@ const Search = () => {
       );
       const data = await response.json();
       if (data.Search) {
-        setSearchResults(data.Search);
+        updateChangeResults(data.Search);
       } else {
-        setSearchResults([]);
+        updateChangeResults([]);
         setSearchError(data.Error || "No results found");
       }
     } catch {

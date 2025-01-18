@@ -14,6 +14,7 @@ export interface Movie {
   Actors: string;
   BoxOffice: string;
   Awards: string;
+  imdbRating: string;
 }
 
 export interface MovieProps {
