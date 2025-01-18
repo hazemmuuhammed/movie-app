@@ -6,7 +6,7 @@ Welcome to the **Movie App**, a web application that allows you to explore movie
 
 - **Search Movies and TV Shows**: Search for any movie or TV show using data fetched from the IMDb database via an API.
 - **Favorites Management**:
-  - Add movies or TV shows to your favorites list.
+  - Add movies or TV shows to your favorites list using zustand.
   - Remove individual movies or TV shows from your favorites.
   - Clear your entire favorites list.
 - **Pagination**: To avoid overwhelming the user, the app uses pagination to display a limited number of results at a time.
