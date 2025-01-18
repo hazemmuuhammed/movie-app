@@ -16,8 +16,6 @@ const Search = () => {
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [totalResults, setTotalResults] = useState(0);
 
   // Debounce the search input
   useEffect(() => {
@@ -50,13 +48,11 @@ const Search = () => {
       const data = await response.json();
       if (data.Search) {
         setSearchResults(data.Search);
-        setTotalResults(data.totalResults);
-        setHasMore(data.Search.length > 0);
       } else {
         setSearchResults([]);
         setSearchError(data.Error || "No results found");
       }
-    } catch (error) {
+    } catch {
       setSearchError("An error occurred while searching");
     } finally {
       setSearchLoading(false);

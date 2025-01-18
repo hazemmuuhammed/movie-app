@@ -1,7 +1,6 @@
 "use client"; // Ensure this directive is at the top
 
-import { useFavoritesStore } from "@/store/useStore";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import FavoritesLayout from "@/components/favorites/FavoritesLayout";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 

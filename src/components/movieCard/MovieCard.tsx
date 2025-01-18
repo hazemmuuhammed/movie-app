@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "@/components/movieCard/MovieCard.module.css";
 import { useFavoritesStore } from "../../store/useStore";
+// import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 interface MovieCardProps {
   movie: {
@@ -17,18 +18,19 @@ interface MovieCardProps {
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isBouncing, setIsBouncing] = useState(false); // State for bouncy animation
+  const [isBouncing, setIsBouncing] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false); // New loading state
   const router = useRouter();
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore();
 
   const handleCardClick = () => {
+    // setIsLoading(true); // Set loading to true when navigating
     router.push(`/movie-details/${movie.imdbID}`);
   };
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsBouncing(true); // Trigger bouncy animation
+    setIsBouncing(true);
 
     if (isFavorite(movie.imdbID)) {
       removeFavorite(movie.imdbID);
@@ -36,15 +38,16 @@ export default function MovieCard({ movie }: MovieCardProps) {
       addFavorite(movie);
     }
 
-    // Reset animation after 500ms
     setTimeout(() => setIsBouncing(false), 500);
   };
+
+  /* Show spinner when loading */
 
   return (
     <div
       className={styles.card}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      // onMouseEnter={() => setIsHovered(true)}
+      // onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
     >
       <div className={styles.posterContainer}>
@@ -62,13 +65,12 @@ export default function MovieCard({ movie }: MovieCardProps) {
           type="button"
           className={`${styles.heartIcon} ${
             isFavorite(movie.imdbID) ? styles.favorite : ""
-          } ${isBouncing ? styles.bounce : ""}`} // Add bounce class when isBouncing is true
+          } ${isBouncing ? styles.bounce : ""}`}
           onClick={handleToggleFavorite}
         >
           {isFavorite(movie.imdbID) ? "❤️" : "🤍"}
         </button>
       </div>
-
       <h3 className={styles.title}>{movie.Title}</h3>
     </div>
   );

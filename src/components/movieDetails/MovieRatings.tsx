@@ -1,9 +1,15 @@
 import styles from "@/components/movieDetails/movie.details.page.module.css";
-export default function MovieRatings({ ratings }: { ratings: any[] }) {
+import { Movie } from "@/types/movie";
+
+export default function MovieRatings({
+  ratings,
+}: {
+  ratings: Movie["Ratings"];
+}) {
   return (
     <div className={styles.ratings}>
       {Array.isArray(ratings) ? (
-        ratings.map((rating: any, index: number) => (
+        ratings.map((rating, index) => (
           <div key={index} className={styles.rating}>
             <span className={styles.ratingSource}>{rating.Source}: </span>
             <span className={styles.ratingValue}>{rating.Value}</span>

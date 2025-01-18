@@ -1,5 +1,11 @@
 import styles from "./movie.details.page.module.css";
-export default function MovieMetadata({ movie }: { movie: any }) {
+import { Movie } from "@/types/movie";
+
+interface MovieDetailsProps {
+  movie: Movie;
+}
+
+export default function MovieMetadata({ movie }: MovieDetailsProps) {
   return (
     <div className={styles.metadata}>
       <p>

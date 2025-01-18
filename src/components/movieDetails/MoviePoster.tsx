@@ -1,12 +1,13 @@
 import Image from "next/image";
 import styles from "@/components/movieDetails/movie.details.page.module.css";
+import { Movie } from "@/types/movie";
 export default function MoviePoster({
   movie,
   handleToggleFavorite,
   isFavorite,
   isBouncing,
 }: {
-  movie: any;
+  movie: Movie;
   handleToggleFavorite: (e: React.MouseEvent) => void;
   isFavorite: (imdbID: string) => boolean;
   isBouncing: boolean;

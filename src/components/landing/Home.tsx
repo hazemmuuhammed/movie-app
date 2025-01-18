@@ -1,11 +1,11 @@
 // components/landing/Home.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getDefaultMovies } from "@/services/movie";
 import MovieCard from "@/components/movieCard/MovieCard";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
-import SkeletonLoader from "@/components/common/SkeletonLoader";
+// import LoadingSpinner from "@/components/common/LoadingSpinner";
+// import SkeletonLoader from "@/components/common/SkeletonLoader";
 import Search from "@/components/search/Search";
 import styles from "@/components/landing/page.module.css";
 import { Notification } from "@/components/movieDetails/Notifications";
@@ -28,7 +28,6 @@ export default function Home({
 }) {
   const [defaultMovies, setDefaultMovies] = useState<Movie[]>(initialMovies);
   const [page, setPage] = useState(1);
-  const [totalResults, setTotalResults] = useState(initialTotalResults);
   const [loading, setLoading] = useState(false);
 
   const loadMoreMovies = async () => {
@@ -67,15 +66,16 @@ export default function Home({
         )}
       </div>
 
-      {defaultMovies.length > 0 && defaultMovies.length < totalResults && (
-        <button
-          onClick={loadMoreMovies}
-          className={styles.loadMoreButton}
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "Load More"}
-        </button>
-      )}
+      {defaultMovies.length > 0 &&
+        defaultMovies.length < initialTotalResults && (
+          <button
+            onClick={loadMoreMovies}
+            className={styles.loadMoreButton}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Load More"}
+          </button>
+        )}
     </div>
   );
 }

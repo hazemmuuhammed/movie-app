@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+// import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { useFavoritesStore } from "@/store/useStore";
 import { Notification } from "@/components/movieDetails/Notifications";
 import MoviePoster from "@/components/movieDetails/MoviePoster";
@@ -11,8 +11,12 @@ import MovieRatings from "@/components/movieDetails/MovieRatings";
 import MoviePlot from "@/components/movieDetails/MoviePlot";
 import styles from "@/components/movieDetails/movie.details.page.module.css";
 import React from "react";
+import { Movie } from "@/types/movie";
+interface MovieDetailsProps {
+  movie: Movie;
+}
 
-export default function MovieDetails({ movie }: { movie: any }) {
+export default function MovieDetails({ movie }: MovieDetailsProps) {
   const [isBouncing, setIsBouncing] = useState(false); // State for bouncy animation
   const [showNotification, setShowNotification] = useState(false);
 

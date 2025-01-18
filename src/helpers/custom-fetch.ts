@@ -1,17 +1,15 @@
-export async function customFetch({
+export async function customFetch<T>({
   url,
   cacheTag,
-  body = null,
+  body = undefined,
   method = "GET",
   contentType = "application/json",
 }: {
   url: string;
-  body?: any;
+  body?: T;
   method?: string;
-  withToken?: boolean;
   contentType?: string;
   cacheTag?: string;
-  cacheTime?: number;
 }) {
   const hdrs = new Headers();
   const isFromServerComponent = hdrs.get("x-internal-action") === "true";
@@ -27,7 +25,7 @@ export async function customFetch({
       method !== "GET" && body
         ? contentType === "application/json"
           ? JSON.stringify(body)
-          : body
+          : (body as BodyInit)
         : undefined,
     next: {
       revalidate: 0,
