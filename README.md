@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Movie App
 
-## Getting Started
+Welcome to the **Movie App**, a web application that allows you to explore movies and TV shows from the IMDb database. With this app, you can search for any movie or TV show, add it to your favorites, and manage your favorites list by removing individual items or clearing the entire list.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Search Movies and TV Shows**: Search for any movie or TV show using data fetched from the IMDb database via an API.
+- **Favorites Management**:
+  - Add movies or TV shows to your favorites list.
+  - Remove individual movies or TV shows from your favorites.
+  - Clear your entire favorites list.
+- **Pagination**: To avoid overwhelming the user, the app uses pagination to display a limited number of results at a time.
+- **Conditional Rendering**: If a search result is found, the app hides the default list of movies to focus on the search results.
+- **Server-Side Rendering (SSR)**: The app is optimized for performance with SSR.
+- **Deployment**: The app is deployed using **Vercel** with CI/CD integration for seamless updates from a GitHub repository.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Design Decisions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Search and Default List**: The first page of the app displays a search bar and a default list of movies. However, when a user searches for a movie, the default list is hidden to prioritize the search results.
+2. **Pagination**: To handle large datasets and improve performance, pagination was implemented to limit the number of movies displayed per page.
+3. **SSR**: Server-side rendering was added to enhance the app's performance and SEO.
+4. **Deployment**: The app is deployed on **Vercel** with CI/CD integration, ensuring automatic updates whenever changes are pushed to the GitHub repository.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Technologies Used
 
-## Learn More
+- **Next.js**: A React framework for building server-rendered applications.
+- **Bun**: A fast all-in-one JavaScript runtime used as the package manager and runtime for this project.
+- **API**: IMDb database API for fetching movie and TV show data.
+- **Vercel**: For deployment and CI/CD integration.
+- **GitHub**: For version control and repository hosting.
 
-To learn more about Next.js, take a look at the following resources:
+## How to Run the App Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To run the app locally, follow these steps:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Install Bun**: If you don't have Bun installed, you can install it by following the instructions on the [official Bun website](https://bun.sh/).
 
-## Deploy on Vercel
+2. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-username/movie-app.git
+   cd movie-app
+   ```
+3. **Install Dependencies**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   bun install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Run the App**:
+
+   ```bash
+   bun dev
+   ```
+
+5. **Open the App**:
+   Copy the localhost URL provided in the terminal (e.g., http://localhost:3000).
+   Paste it into your browser's address bar and press Enter.
+
+## Deployment
+
+The app is deployed using Vercel. Every time you push changes to the main branch of the GitHub repository, Vercel automatically builds and deploys the updated version of th
