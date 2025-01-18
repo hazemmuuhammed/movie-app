@@ -58,4 +58,4 @@ To run the app locally, follow these steps:
 
 ## Deployment
 
-The app is deployed using Vercel. Every time you push changes to the main branch of the GitHub repository, Vercel automatically builds and deploys the updated version of th
+The app is deployed and can be accessed at https://movie-app-omega-virid.vercel.app/
