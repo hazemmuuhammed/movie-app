@@ -1,9 +1,17 @@
 /* General Styles */
+body {
+  background-color: #121212; /* Dark background */
+  color: #fff; /* White text */
+  margin: 0;
+  padding: 0;
+}
+
 .container {
   padding: 20px;
   text-align: center;
-
-  color: #fff; /* White text */
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .container h1 {
@@ -139,7 +147,7 @@
   transform: scale(0.98); /* Slight scale effect on click */
 }
 
-/* styles.module.css */
+/* Notification Styles */
 .notification {
   position: fixed;
   top: 20px;
@@ -160,13 +168,8 @@
     transform: translateX(0);
   }
 }
-.container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
 
+/* NavBar Styles */
 .navBar {
   display: flex;
   justify-content: flex-start;
