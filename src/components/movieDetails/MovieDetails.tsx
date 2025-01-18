@@ -1,6 +1,6 @@
 "use client"; // Mark this as a Client Component
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { useFavoritesStore } from "@/store/useStore";
@@ -10,45 +10,14 @@ import MovieMetadata from "@/components/movieDetails/MovieMetadata";
 import MovieRatings from "@/components/movieDetails/MovieRatings";
 import MoviePlot from "@/components/movieDetails/MoviePlot";
 import styles from "@/components/movieDetails/movie.details.page.module.css";
+import React from "react";
 
-export default function MovieDetails({
-  params,
-}: {
-  params: Promise<{ imdbID: string }>;
-}) {
-  const [movie, setMovie] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default function MovieDetails({ movie }: { movie: any }) {
   const [isBouncing, setIsBouncing] = useState(false); // State for bouncy animation
   const [showNotification, setShowNotification] = useState(false);
 
   // Zustand store for favorites
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore();
-
-  // Fetch movie details
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const response = await fetch(
-          `http://www.omdbapi.com/?i=${(await params).imdbID}&apikey=a406e1c`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch movie details");
-        }
-        const data = await response.json();
-        if (data.Response === "False") {
-          throw new Error(data.Error || "Movie not found");
-        }
-        setMovie(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMovieDetails();
-  }, [params]);
 
   // Toggle favorite
   const handleToggleFavorite = (e: React.MouseEvent) => {
@@ -67,7 +36,7 @@ export default function MovieDetails({
   };
 
   // Hide notification after a few seconds
-  useEffect(() => {
+  React.useEffect(() => {
     if (showNotification) {
       const timer = setTimeout(() => {
         setShowNotification(false);
@@ -75,14 +44,6 @@ export default function MovieDetails({
       return () => clearTimeout(timer);
     }
   }, [showNotification]);
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  if (error) {
-    return <div className={styles.error}>Error: {error}</div>;
-  }
 
   if (!movie) {
     return <div className={styles.error}>No movie data found.</div>;

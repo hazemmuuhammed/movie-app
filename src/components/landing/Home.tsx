@@ -1,12 +1,15 @@
-"use client"; // Mark this as a Client Component
-import { useEffect, useState } from "react";
+// components/landing/Home.tsx
+"use client";
+
+import { useState, useEffect } from "react";
+import { getDefaultMovies } from "@/services/movie";
 import MovieCard from "@/components/movieCard/MovieCard";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
-import Search from "@/components/search/Search"; // Update the import path
-import styles from "@/components/landing/page.module.css"; // Update the import path
-import { Notification } from "@/components/movieDetails/Notifications"; // Update the import path
-import Link from "next/link"; // Import Link for navigation
+import Search from "@/components/search/Search";
+import styles from "@/components/landing/page.module.css";
+import { Notification } from "@/components/movieDetails/Notifications";
+import Link from "next/link";
 
 interface Movie {
   Title: string;
@@ -16,68 +19,29 @@ interface Movie {
   imdbRating?: string;
 }
 
-export default function Home() {
-  const [defaultMovies, setDefaultMovies] = useState<Movie[]>([]); // Movies for the home page
-  const [searchResults, setSearchResults] = useState<Movie[]>([]); // Movies from search
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function Home({
+  initialMovies,
+  initialTotalResults,
+}: {
+  initialMovies: Movie[];
+  initialTotalResults: number;
+}) {
+  const [defaultMovies, setDefaultMovies] = useState<Movie[]>(initialMovies);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(initialTotalResults);
+  const [loading, setLoading] = useState(false);
 
-  const [page, setPage] = useState(1); // Pagination state
-  const [hasMore, setHasMore] = useState(true); // Track if more movies are available
-  const [totalResults, setTotalResults] = useState(0); // Total results from the API
-
-  // Fetch default movies for the home page
-  useEffect(() => {
-    const fetchDefaultMovies = async () => {
-      try {
-        setLoading(true);
-        const apiKey = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-        const response = await fetch(
-          `https://www.omdbapi.com/?s=action&page=${page}&apikey=${apiKey}`
-        );
-        const data = await response.json();
-        if (data.Search) {
-          if (page === 1) {
-            setDefaultMovies(data.Search); // Set initial movies
-            setTotalResults(Number(data.totalResults)); // Set total results
-          } else {
-            setDefaultMovies((prevMovies) => [...prevMovies, ...data.Search]); // Append new movies
-          }
-          setHasMore(defaultMovies.length < Number(data.totalResults)); // Check if more movies are available
-        }
-      } catch (error) {
-        console.error("Error fetching default movies:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDefaultMovies();
-  }, [page]); // Fetch movies when the page changes
-
-  // Handle search query changes
-
-  const toggleFavorite = (imdbID: string) => {
-    setFavorites((prevFavorites) => {
-      if (prevFavorites.includes(imdbID)) {
-        // If the movie is already in favorites, remove it
-        return prevFavorites.filter((id) => id !== imdbID);
-      } else {
-        // If the movie is not in favorites, add it
-        return [...prevFavorites, imdbID];
-      }
-    });
-  };
-
-  const loadMoreMovies = () => {
-    if (defaultMovies.length < totalResults) {
-      setPage((prevPage) => prevPage + 1); // Load the next page
-    }
+  const loadMoreMovies = async () => {
+    setLoading(true);
+    const nextPage = page + 1;
+    const data = await getDefaultMovies(nextPage);
+    setDefaultMovies((prevMovies) => [...prevMovies, ...data.Search]);
+    setPage(nextPage);
+    setLoading(false);
   };
 
   return (
     <div className={styles.container}>
-      {/* Navigation Bar */}
       <nav className={styles.navBar}>
         <Link href="/" className={styles.navLink}>
           Home
@@ -91,41 +55,25 @@ export default function Home() {
 
       <Notification />
 
-      {/* Search Input */}
       <Search />
 
-      {/* Loading State */}
-      {loading && page === 1 ? (
-        <>
-          <LoadingSpinner />
-          <div className={styles.movieList}>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <SkeletonLoader key={index} />
-            ))}
-          </div>
-        </>
-      ) : (
-        /* Movie List */
-        <div className={styles.movieList}>
-          {defaultMovies.length > 0 ? (
-            defaultMovies.map((movie) => (
-              <MovieCard
-                key={movie.imdbID}
-                movie={movie}
-                onToggleFavorite={toggleFavorite}
-                isFavorite={favorites.includes(movie.imdbID)} // Pass a function that returns the current state
-              />
-            ))
-          ) : (
-            <p>No movies found.</p>
-          )}
-        </div>
-      )}
+      <div className={styles.movieList}>
+        {defaultMovies.length > 0 ? (
+          defaultMovies.map((movie) => (
+            <MovieCard key={movie.imdbID} movie={movie} />
+          ))
+        ) : (
+          <p>No movies found.</p>
+        )}
+      </div>
 
-      {/* Load More Button */}
       {defaultMovies.length > 0 && defaultMovies.length < totalResults && (
-        <button onClick={loadMoreMovies} className={styles.loadMoreButton}>
-          Load More
+        <button
+          onClick={loadMoreMovies}
+          className={styles.loadMoreButton}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Load More"}
         </button>
       )}
     </div>

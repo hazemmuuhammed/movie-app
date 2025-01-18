@@ -11,7 +11,7 @@ interface MovieCardProps {
     Poster: string;
     imdbID: string;
   };
-  onToggleFavorite: (imdbID: string) => void;
+  onToggleFavorite?: (imdbID: string) => void;
   isFavorite?: boolean;
   showRemoveButton?: boolean;
 }

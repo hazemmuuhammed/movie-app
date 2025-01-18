@@ -1,11 +1,20 @@
-import { Suspense } from "react";
+// app/page.tsx
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Home from "@/components/landing/Home";
-import LoadingSpinner from "@/components/common/LoadingSpinner"; // Import a fallback component
+import { getDefaultMovies } from "@/services/movie";
+import { Suspense } from "react";
 
-export default function Page() {
+export default async function Page() {
+  const initialData = await getDefaultMovies(1);
+  const initialMovies = initialData.Search || [];
+  const initialTotalResults = Number(initialData.totalResults) || 0;
+
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <Home />
+      <Home
+        initialMovies={initialMovies}
+        initialTotalResults={initialTotalResults}
+      />
     </Suspense>
   );
 }

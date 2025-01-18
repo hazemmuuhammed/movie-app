@@ -8,7 +8,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 export default function FavoritesPage() {
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <FavoritesLayout />;
+      <FavoritesLayout />
     </Suspense>
   );
 }
