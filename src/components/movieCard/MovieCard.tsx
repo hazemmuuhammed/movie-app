@@ -1,6 +1,5 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "@/components/movieCard/MovieCard.module.css";
@@ -19,14 +18,9 @@ interface MovieCardProps {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isBouncing, setIsBouncing] = useState(false);
-  const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
+  const [isBouncing, setIsBouncing] = useState(false); // State for bouncy animation
   const router = useRouter();
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore();
-
-  useEffect(() => {
-    setIsMounted(true); // Set mounted to true after initial render
-  }, []);
 
   const handleCardClick = () => {
     router.push(`/movie-details/${movie.imdbID}`);
@@ -34,7 +28,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsBouncing(true);
+    setIsBouncing(true); // Trigger bouncy animation
 
     if (isFavorite(movie.imdbID)) {
       removeFavorite(movie.imdbID);
@@ -42,12 +36,9 @@ export default function MovieCard({ movie }: MovieCardProps) {
       addFavorite(movie);
     }
 
+    // Reset animation after 500ms
     setTimeout(() => setIsBouncing(false), 500);
   };
-
-  if (!isMounted) {
-    return null; // Return null or a loading state during server-side rendering
-  }
 
   return (
     <div
@@ -71,7 +62,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
           type="button"
           className={`${styles.heartIcon} ${
             isFavorite(movie.imdbID) ? styles.favorite : ""
-          } ${isBouncing ? styles.bounce : ""}`}
+          } ${isBouncing ? styles.bounce : ""}`} // Add bounce class when isBouncing is true
           onClick={handleToggleFavorite}
         >
           {isFavorite(movie.imdbID) ? "❤️" : "🤍"}
